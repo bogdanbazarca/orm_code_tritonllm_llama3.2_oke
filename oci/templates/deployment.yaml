@@ -1,0 +1,52 @@
+apiVersion: apps/v1
+kind: Deployment
+metadata:
+  name: {{ .Release.Name }}
+  labels:
+    app: triton-inference-server
+    release: {{ .Release.Name }}
+spec:
+  replicas: 1
+  selector:
+    matchLabels:
+      app: triton-inference-server
+      release: {{ .Release.Name }}
+  template:
+    metadata:
+      labels:
+        app: triton-inference-server
+        release: {{ .Release.Name }}
+    spec:
+      hostNetwork: true
+      containers:
+      - name: triton-test
+        image: {{ .Values.image.repository }}:{{ .Values.image.tag }}
+        imagePullPolicy: {{ .Values.image.pullPolicy }}
+        ports:
+          - containerPort: {{ .Values.ports.http }}
+            name: http
+          - containerPort: {{ .Values.ports.grpc }}
+            name: grpc
+          - containerPort: {{ .Values.ports.metrics }}
+            name: metrics
+        resources:
+          requests:
+            nvidia.com/gpu: {{ .Values.resources.requests.gpu }}
+            memory: {{ .Values.resources.requests.memory }}
+          limits:
+            nvidia.com/gpu: {{ .Values.resources.limits.gpu }}
+            memory: {{ .Values.resources.limits.memory }}
+        securityContext:
+          capabilities:
+            add: ["SYS_ADMIN"]
+          privileged: true
+        volumeMounts:
+          - name: fuse-device
+            mountPath: /dev/fuse
+        env:
+        - name: engine
+          value: {{ .Values.env.engine }}        
+      volumes:
+        - name: fuse-device
+          hostPath:
+            path: /dev/fuse

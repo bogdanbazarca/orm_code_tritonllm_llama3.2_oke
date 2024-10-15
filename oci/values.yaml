@@ -1,0 +1,17 @@
+image:
+  repository: mtz.ocir.io/orasenatdpltintegration03/tritonllm-llama32
+  tag: latest
+  pullPolicy: IfNotPresent
+ports:
+  http: 8000
+  grpc: 8001
+  metrics: 8002
+env:
+  engine: ${model_engine}
+resources:
+  requests:
+    memory: "20Gi"
+    gpu: "1"
+  limits:
+    memory: "30Gi"
+    gpu: "1"
