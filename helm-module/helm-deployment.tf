@@ -53,7 +53,7 @@ resource "null_resource" "helm_deployment_via_operator" {
   count = var.deploy_from_operator ? 1 : 0
 
   triggers = {
-    manifest_md5    = try(md5("${var.helm_template_values_override}-${var.helm_user_values_override}"), null)
+    #manifest_md5    = try(md5("${var.helm_template_values_override}-${var.helm_user_values_override}"), null)
     deployment_name = var.deployment_name
     namespace       = var.namespace
     bastion_host    = var.bastion_host
@@ -78,10 +78,10 @@ resource "null_resource" "helm_deployment_via_operator" {
     inline = ["mkdir -p ${local.operator_helm_values_path}"]
   }
 
-  provisioner "file" {
-    content     = var.helm_template_values_override
-    destination = local.operator_helm_values_override_template_file_path
-  }
+  #provisioner "file" {
+  #  content     = var.helm_template_values_override
+  #  destination = local.operator_helm_values_override_template_file_path
+  #}
 
   provisioner "file" {
     content     = var.helm_user_values_override
