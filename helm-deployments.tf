@@ -36,11 +36,11 @@ module "triton-inference-server" {
 
   # this override the values.yaml file from chart
   # this is a file present in helm-values-templates folder
-  helm_template_values_override = templatefile(
-    "${path.root}/helm-values-templates/value_triton.yaml", {
-      engine : var.model_engine
-    }
-  )
+  #helm_template_values_override = templatefile(
+  #  "${path.root}/helm-values-templates/value_triton.yaml", {
+  #    engine : var.model_engine
+  #  }
+  #)
 
   # this is a file user uploads from ORM 
   #helm_user_values_override = try(base64decode(var.nginx_user_values_override), var.nginx_user_values_override)
