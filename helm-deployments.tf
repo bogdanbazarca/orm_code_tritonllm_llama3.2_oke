@@ -46,6 +46,9 @@ module "triton-inference-server" {
   #helm_user_values_override = try(base64decode(var.nginx_user_values_override), var.nginx_user_values_override)
   # helm_user_values_override = try(base64decode(var.dcgm_user_values_override), var.dcgm_user_values_override)
 
+  helm_template_values_override = ""
+  helm_user_values_override     = ""
+
   kube_config = one(data.oci_containerengine_cluster_kube_config.kube_config.*.content)
   depends_on  = [module.oke]
 }
