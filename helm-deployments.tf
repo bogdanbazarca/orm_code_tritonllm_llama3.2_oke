@@ -34,7 +34,13 @@ module "triton-inference-server" {
   pre_deployment_commands  = []
   post_deployment_commands = []
 
-  helm_template_values_override = ""
+  # this override the values.yaml file from chart
+  # this is a file present in helm-values-templates folder
+  helm_template_values_override = templatefile(
+    "${path.root}/helm-values-templates/value_triton.yaml", {
+      engine : var.model_engine
+    }
+  )
   helm_user_values_override     = ""
 
   kube_config = one(data.oci_containerengine_cluster_kube_config.kube_config.*.content)
