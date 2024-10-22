@@ -6,8 +6,8 @@ locals {
   operator_helm_charts_path = coalesce(var.operator_helm_charts_path, "/home/${var.operator_user}/tf-helm-charts")
   operator_helm_chart_path  = "${local.operator_helm_charts_path}/${var.namespace}-${var.deployment_name}-${basename(var.helm_chart_path)}"
 
-  helm_values_override_user_file     = "" #"${var.namespace}-${var.deployment_name}-user-values-override.yaml"
-  helm_values_override_template_file = "" #"${var.namespace}-${var.deployment_name}-template-values-override.yaml"
+  helm_values_override_user_file     = "${var.namespace}-${var.deployment_name}-user-values-override.yaml"
+  helm_values_override_template_file = "${var.namespace}-${var.deployment_name}-template-values-override.yaml"
 
   operator_helm_values_override_user_file_path     = join("/", [local.operator_helm_values_path, local.helm_values_override_user_file])
   operator_helm_values_override_template_file_path = join("/", [local.operator_helm_values_path, local.helm_values_override_template_file])
