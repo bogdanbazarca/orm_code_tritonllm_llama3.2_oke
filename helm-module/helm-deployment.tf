@@ -6,8 +6,8 @@ locals {
   operator_helm_charts_path = coalesce(var.operator_helm_charts_path, "/home/${var.operator_user}/tf-helm-charts")
   operator_helm_chart_path  = "${local.operator_helm_charts_path}/${var.namespace}-${var.deployment_name}-${basename(var.helm_chart_path)}"
 
-  helm_values_override_user_file     = "${var.namespace}-${var.deployment_name}-user-values-override.yaml"
-  helm_values_override_template_file = "${var.namespace}-${var.deployment_name}-template-values-override.yaml"
+  #helm_values_override_user_file     = "${var.namespace}-${var.deployment_name}-user-values-override.yaml"
+  #helm_values_override_template_file = "${var.namespace}-${var.deployment_name}-template-values-override.yaml"
 
   operator_helm_values_override_user_file_path     = join("/", [local.operator_helm_values_path, local.helm_values_override_user_file])
   operator_helm_values_override_template_file_path = join("/", [local.operator_helm_values_path, local.helm_values_override_template_file])
@@ -83,35 +83,35 @@ resource "null_resource" "helm_deployment_via_operator" {
   #  destination = local.operator_helm_values_override_template_file_path
   #}
 
-  provisioner "file" {
-    content     = var.helm_user_values_override
-    destination = local.operator_helm_values_override_user_file_path
-  }
+  #provisioner "file" {
+  #  content     = var.helm_user_values_override
+  #  destination = local.operator_helm_values_override_user_file_path
+  #}
 
-  provisioner "remote-exec" {
-    inline = concat(
-      var.pre_deployment_commands,
-      [
-        "if [ -s \"${local.operator_helm_values_override_user_file_path}\" ]; then",
-        join(" ", concat([
-          "helm upgrade --install ${var.deployment_name}",
-          "%{if var.helm_chart_path != ""}${local.operator_helm_chart_path}%{else}${var.helm_chart_name} --repo ${var.helm_repository_url}%{endif}",
-          "--namespace ${var.namespace} --create-namespace",
-          "-f ${local.operator_helm_values_override_template_file_path}",
-          "-f ${local.operator_helm_values_override_user_file_path}"
-        ], var.deployment_extra_args)),
-        "else",
-        join(" ", concat([
-          "helm upgrade --install ${var.deployment_name}",
-          "%{if var.helm_chart_path != ""}${local.operator_helm_chart_path}%{else}${var.helm_chart_name} --repo ${var.helm_repository_url}%{endif}",
-          "--namespace ${var.namespace} --create-namespace",
-          "-f ${local.operator_helm_values_override_template_file_path}"
-        ], var.deployment_extra_args)),
-        "fi"
-      ],
-      var.post_deployment_commands
-    )
-  }
+  #provisioner "remote-exec" {
+  #  inline = concat(
+  #    var.pre_deployment_commands,
+  #    [
+  #      "if [ -s \"${local.operator_helm_values_override_user_file_path}\" ]; then",
+  #      join(" ", concat([
+  #        "helm upgrade --install ${var.deployment_name}",
+  #        "%{if var.helm_chart_path != ""}${local.operator_helm_chart_path}%{else}${var.helm_chart_name} --repo ${var.helm_repository_url}%{endif}",
+  #        "--namespace ${var.namespace} --create-namespace",
+  #        "-f ${local.operator_helm_values_override_template_file_path}",
+  #        "-f ${local.operator_helm_values_override_user_file_path}"
+  #      ], var.deployment_extra_args)),
+  #      "else",
+  #      join(" ", concat([
+  #        "helm upgrade --install ${var.deployment_name}",
+  #        "%{if var.helm_chart_path != ""}${local.operator_helm_chart_path}%{else}${var.helm_chart_name} --repo ${var.helm_repository_url}%{endif}",
+  #        "--namespace ${var.namespace} --create-namespace",
+  #        "-f ${local.operator_helm_values_override_template_file_path}"
+  #      ], var.deployment_extra_args)),
+  #      "fi"
+  #    ],
+  #    var.post_deployment_commands
+  #  )
+  #}
 
   provisioner "remote-exec" {
     when       = destroy
@@ -133,20 +133,20 @@ resource "null_resource" "helm_deployment_via_operator" {
 }
 
 
-resource "local_file" "helm_template_file" {
-  count = var.deploy_from_local ? 1 : 0
+#resource "local_file" "helm_template_file" {
+#  count = var.deploy_from_local ? 1 : 0
+#
+#  content  = var.helm_template_values_override
+#  filename = local.local_helm_values_override_template_file_path
+#}
 
-  content  = var.helm_template_values_override
-  filename = local.local_helm_values_override_template_file_path
-}
 
-
-resource "local_file" "helm_user_file" {
-  count = var.deploy_from_local ? 1 : 0
-
-  content  = var.helm_user_values_override
-  filename = local.local_helm_values_override_user_file_path
-}
+#resource "local_file" "helm_user_file" {
+#  count = var.deploy_from_local ? 1 : 0
+#
+#  content  = var.helm_user_values_override
+#  filename = local.local_helm_values_override_user_file_path
+#}
 
 resource "local_file" "cluster_kube_config_file" {
   count = var.deploy_from_local ? 1 : 0
@@ -159,7 +159,7 @@ resource "null_resource" "helm_deployment_from_local" {
   count = var.deploy_from_local ? 1 : 0
 
   triggers = {
-    manifest_md5    = try(md5("${var.helm_template_values_override}-${var.helm_user_values_override}"), null)
+    #manifest_md5    = try(md5("${var.helm_template_values_override}-${var.helm_user_values_override}"), null)
     deployment_name = var.deployment_name
     namespace       = var.namespace
     kube_config     = var.kube_config
