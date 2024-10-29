@@ -91,7 +91,7 @@ This code deployes [**NVIDIA_Triton_LLM_with_llama2-7b**](https://github.com/tri
 - Under _helm-values-templates_ the file _value_triton_ override the helm chart values
 - The triton server runs on ports 8000, 8001 and 8002 and exposes them on worker node which then uses a Load balancer to get external access
 - To run triton server only on worker nodes with GPU it uses a _resource_type_ (resource key: nvidia.com/gpu) which is set by the code that deploys the OKE ()
-- The triton inference will be available to query via external Load Balancer IP in this manner: ```curl -X POST http:/<external_LB_IP>:8000/v2/models/tensorrt_llm_bls/generate -H "Content-Type: application/json" -d '{"text_input": "Meta is", "max_tokens": 53, "bad_words": "", "stop_words": ""}'```
+- The triton inference will be available to query via external Load Balancer IP in this manner: ```curl -X POST http://<External_IP_of_LB>:8000/v2/models/ensemble/generate -d   '{"text_input": "What is machine learning?", "max_tokens": 20, "bad_words": "", "stop_words": ""}'```
 
 
 ## How to deploy?
