@@ -27,7 +27,7 @@
 replicaCount: 1
 
 image:
-  repository: mtz.ocir.io/orasenatdpltintegration03/tritonllm-llama32
+  repository: fra.ocir.io/ocisateam/tritonllm_llama3.2
   tag: latest
   pullPolicy: IfNotPresent
 ports:
@@ -35,7 +35,7 @@ ports:
   grpc: 8001
   metrics: 8002
 env:
-  engine: "${engine}" 
+  engine: "${engine}"
 resources:
   requests:
     memory: "20Gi"

@@ -1,5 +1,5 @@
 image:
-  repository: mtz.ocir.io/orasenatdpltintegration03/tritonllm-llama32
+  repository: fra.ocir.io/ocisateam/tritonllm_llama3.2
   tag: latest
   pullPolicy: IfNotPresent
 ports:
