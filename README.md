@@ -56,7 +56,7 @@ module "nginx" {
   helm_chart_name           = "ingress-nginx"  # The name of the helm chart to be used (required only when usnig helm_repository_url)
   namespace                 = "nginx" # The namespace to use for the deployment
   helm_repository_url       = "https://kubernetes.github.io/ingress-nginx" # Fetch helm chart from this Helm repository URL
-  helm_chart_path           = "" # Can be used for deployments of helm charts available locally, as remote http tgz file or OCI repository. If present, and not empty, will override `helm_repository_url` 
+  helm_chart_path           = "" # Can be used for deployments of helm charts available locally, as remote http tgz file or OCI repository. If present, and not empty, will override `helm_repository_url`
   operator_helm_values_path = local.operator_helm_values_path # Local variable used to determine where the required files are stored on operator
   pre_deployment_commands   = [] # A list of bash commands that will be executed before the helm deployment
   post_deployment_commands  = [] # A list of bash commands that will be executed after the helm deployment.
