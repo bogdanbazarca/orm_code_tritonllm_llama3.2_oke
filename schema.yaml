@@ -270,7 +270,7 @@ variables:
       - npn
 
   control_plane_is_public:
-    title: Create public OKE API?
+    title: Create public OKE API
     description: Associate a public IP address with the OKE control plane endpoint? This is required for Helm deployments when bastion and operator hosts are not created.
     type: boolean
     default: true
